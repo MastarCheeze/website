@@ -1,0 +1,123 @@
+---
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import ProjectTags from "@components/ProjectTags.astro";
+
+const projects = (await getCollection("projects")).sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout title="MastarCheeze">
+	<div class="limit-width content">
+		<div class="grid">
+			<div class="grid-sizer"></div>
+			<div class="gutter-sizer"></div>
+			{
+				projects.map((project) => (
+					<div class="grid-item">
+						<a href={project.data.url} target="_blank">
+							{project.data.image && <Image src={project.data.image} alt={project.data.imageAlt ?? ""} />}
+							<div class="grid-item-content">
+								<h2>{project.data.title}</h2>
+								<p>{project.data.description}</p>
+								<ProjectTags tags={project.data.tags} />
+							</div>
+						</a>
+					</div>
+				))
+			}
+		</div>
+	</div>
+</BaseLayout>
+
+<script>
+	import Masonry from "masonry-layout";
+
+	new Masonry(".grid", {
+		itemSelector: ".grid-item",
+		columnWidth: ".grid-sizer",
+		gutter: ".gutter-sizer",
+		percentPosition: true,
+		horizontalOrder: true,
+	});
+</script>
+
+<style>
+	#header {
+		text-align: center;
+		margin-bottom: 2rem;
+	}
+
+	#header p {
+		color: var(--color-text-dimmed);
+	}
+
+	.grid {
+		--margin-size: 1.5rem;
+	}
+
+	.grid-item,
+	.grid-sizer {
+		width: calc(50% - var(--margin-size) / 2);
+	}
+
+	.gutter-sizer {
+		width: var(--margin-size);
+	}
+
+	@media (width < 48rem) {
+		.grid-item,
+		.grid-sizer {
+			width: 100%;
+		}
+	}
+
+	.grid-item {
+		margin-bottom: var(--margin-size);
+		background-color: var(--color-surface-dark);
+		border: 1px solid var(--color-border);
+		border-radius: 8px;
+		font-size: 1.1rem;
+		transition:
+			transform 0.3s ease,
+			border-color 0.3s ease;
+	}
+
+	.grid-item:hover {
+		transform: scale(1.075);
+		border-color: var(--color-primary-light);
+	}
+
+	.grid-item a {
+		color: var(--color-text);
+	}
+
+	.grid-item a:hover {
+		text-decoration: none;
+	}
+
+	.grid-item-content {
+		padding-block: 1rem 1.25rem;
+		padding-inline: 1.5rem;
+	}
+
+	.grid-item img {
+		width: 100%;
+		border-radius: 8px 8px 0 0;
+	}
+
+	.grid-item h2 {
+		margin-bottom: 0.25rem;
+		color: var(--color-text);
+		transform: color 0.3s ease;
+	}
+
+	.grid-item:hover h2 {
+		color: var(--color-primary-light);
+	}
+
+	.grid-item p {
+		margin-bottom: 1rem;
+		color: var(--color-text-dimmed);
+	}
+</style>

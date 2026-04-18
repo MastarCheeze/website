@@ -1,0 +1,29 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer>
+  <div class="container">
+    <span>
+      &copy; {year} &middot; MastarCheeze &middot; Made with <a href="https://astro.build/">Astro</a>
+    </span>
+  </div>
+</footer>
+
+<style>
+  footer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-block: 1.5em;
+    font-size: 1rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  div {
+    width: 75%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+  }
+</style>

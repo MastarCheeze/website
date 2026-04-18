@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "website",
   "type": "module",
   "version": "0.0.1",
   "engines": {
@@ -12,6 +12,10 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^6.1.8"
+    "astro": "^6.1.8",
+    "masonry-layout": "^4.2.2"
+  },
+  "devDependencies": {
+    "@types/masonry-layout": "^4.2.8"
   }
 }

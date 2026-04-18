@@ -1,0 +1,73 @@
+/* Variables */
+:root {
+  /* slate 900 */
+  --color-bg: #0f172a;
+  /* slate 800 */
+  --color-surface: #1e293b;
+  /* slate 950 */
+  --color-surface-dark: #020617;
+  /* amber 400 */
+  --color-primary: #fbbf24;
+  /* amber 200 */
+  --color-primary-light: #fde68a;
+  /* slate 700 */
+  --color-border: #334155;
+  /* slate 50 */
+  --color-text: #f8fafc;
+  /* slate 500 */
+  --color-text-dimmed: #64748b;
+  /* slate 600 */
+  --color-text-dimmer: #475569;
+  --color-link: var(--color-primary);
+  --color-link-hover: var(--color-primary-light);
+
+  --max-content-width: 48rem;
+}
+
+/* CSS reset */
+*,
+::before,
+::after {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+button {
+  background: none;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+/* Main styles */
+body {
+  min-height: 100vh;
+  font-family: var(--font-poppins);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-link);
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: var(--color-link-hover);
+}
+
+button:active {
+  background-color: transparent;
+}
+
+img {
+  width: 100%;
+  height: auto;
+  box-sizing: content-box;
+}

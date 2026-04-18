@@ -1,0 +1,68 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Tags from "@components/Tags.astro";
+import { formatDate } from "@utils/formatDate";
+
+interface Props {
+  post: CollectionEntry<"blog">;
+  activeTag?: string;
+}
+
+const { post, activeTag } = Astro.props;
+---
+
+<article>
+  <a href={`/blog/${post.id}`}>
+    <h2 class="title">{post.data.title}</h2>
+    <p class="date">{formatDate(post.data.publishDate)}</p>
+    <p class="description">{post.data.description}</p>
+  </a>
+  <div class="tags">
+    <Tags tags={post.data.tags} active={activeTag} />
+  </div>
+</article>
+
+<style>
+  article {
+    position: relative;
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: var(--color-surface-dark);
+    padding: 1rem 1.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+
+  article a {
+    text-decoration: none;
+  }
+
+  article:hover {
+    transform: scale(1.05);
+    border-color: var(--color-primary-light);
+  }
+
+  .title {
+    color: var(--color-text);
+    transition: color 0.3s ease;
+  }
+
+  article:hover .title {
+    color: var(--color-primary-light);
+  }
+
+  .date {
+    font-size: 80%;
+    color: var(--color-text);
+  }
+
+  .description {
+    color: var(--color-text-dimmed);
+    margin-block: 0.75rem;
+  }
+
+  .tags {
+    margin-top: 0.25rem;
+  }
+</style>

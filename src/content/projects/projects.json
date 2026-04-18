@@ -1,0 +1,79 @@
+{
+  "pyp-finder": {
+    "title": "PYP Finder",
+    "description": "Past year paper finder for CAIE exam papers.",
+    "image": "./pyp-finder.png",
+    "imageAlt": "Screenshot of PYP Finder's interface showing a search for CAIE past papers.",
+    "tags": [ "Go", "Vue", "PostgreSQL" ],
+    "url": "https://pypfinder.mastarcheeze.com",
+    "featured": true,
+    "order": 1
+  },
+  "scrabble-solver": {
+    "title": "Scrabble Solver",
+    "description": "Program that finds the highest scoring move.",
+    "image": "./scrabble-solver.png",
+    "imageAlt": "A Scrabble board displaying the state of an active, ongoing match.",
+    "tags": [ "Python", "Pygame" ],
+    "url": "https://github.com/MastarCheeze/scrabble-solver",
+    "featured": true,
+    "order": 2
+  },
+  "there-is-no-game": {
+    "title": "There Is No Game",
+    "description": "Platformer game.",
+    "image": "./there-is-no-game.png",
+    "imageAlt": "There Is No Game's cover image.",
+    "tags": [ "Unity", "C#" ],
+    "url": "https://mastarcheeze.itch.io/there-is-no-game",
+    "order": 3
+  },
+  "push-box": {
+    "title": "Push Box",
+    "description": "Puzzle game inspired by Sokoban.",
+    "image": "./push-box.png",
+    "imageAlt": "Push Box's cover image.",
+    "tags": [ "HaxeFlixel", "Haxe" ],
+    "url": "https://mastarcheeze.itch.io/push-box",
+    "order": 4
+  },
+  "nvim-config": {
+    "title": "Neovim Configuration",
+    "description": "My Neovim configuration files.",
+    "tags": [ "Lua" ],
+    "url": "https://github.com/MastarCheeze/nvim",
+    "order": 5
+  },
+  "cookie-clicker-mods": {
+    "title": "Cookie Clicker Mods",
+    "description": "Collection of mods for Cookie Clicker.",
+    "tags": [ "TypeScript", "JavaScript" ],
+    "url": "https://github.com/MastarCheeze/cookie-clicker-mods",
+    "order": 6
+  },
+  "notes-ssg": {
+    "title": "Notes",
+    "description": "Static site generator for my study notes. (Partially complete)",
+    "tags": [ "TypeScript", "HTML" ],
+    "url": "https://github.com/MastarCheeze/notes",
+    "order": 7
+  },
+  "willem-dafoe-clock": {
+    "title": "Willem Dafoe Clock",
+    "description": "Vintage Willem Dafoe wall clock.",
+    "image": "./willem-dafoe-clock.png",
+    "imageAlt": "A Willem Dafoe wall clock.",
+    "tags": [ "HTML", "JavaScript" ],
+    "url": "https://mastarcheeze.github.io/willem-dafoe-clock/",
+    "order": 8
+  },
+  "rickroll": {
+    "title": "Link is Rickroll",
+    "description": "Chrome extension that redirect links to Rickroll.",
+    "image": "./link-is-rickroll.webp",
+    "imageAlt": "Rick Astley singing 'Never Gonna Give You Up'.",
+    "tags": [ "JavaScript", "Chrome Extension" ],
+    "url": "https://github.com/MastarCheeze/link-is-rickroll",
+    "order": 9
+  }
+}

@@ -1,0 +1,99 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import Font from "astro/components/Font.astro";
+
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Tags from "@components/Tags.astro";
+import "@styles/blogPost.css";
+import { formatDate } from "@utils/formatDate";
+
+interface Props {
+  post: CollectionEntry<"blog">;
+}
+
+const { post } = Astro.props;
+
+const publishDate = formatDate(post.data.publishDate);
+const updatedDate = post.data.updatedDate ? formatDate(post.data.updatedDate) : null;
+---
+
+<BaseLayout title={`${post.data.title} | MastarCheeze`}>
+  <Fragment slot="head">
+    <Font cssVariable="--font-cascadia-code" />
+  </Fragment>
+
+  {post.data.image && <Image id="cover" src={post.data.image} alt={post.data.imageAlt ?? ""} />}
+
+  <div id="blog-post" class="limit-width content">
+    <div id="header">
+      <h1 id="title">{post.data.title}</h1>
+      <div id="author">by MastarCheeze</div>
+      <div id="date">
+        <p>Published on <span>{publishDate}</span>.</p>
+        {
+          updatedDate && (
+            <p>
+              Last updated on <span>{updatedDate}</span>.
+            </p>
+          )
+        }
+      </div>
+      <div id="tags">
+        <Tags tags={post.data.tags} />
+      </div>
+    </div>
+    <div id="content">
+      <slot />
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  #cover {
+    width: 100vw;
+    margin-left: 50%;
+    translate: -50% 0;
+    aspect-ratio: 21 / 9;
+    object-fit: contain;
+    background-color: var(--color-surface-dark);
+  }
+
+  #header {
+    margin-block: 0 2.5em;
+    padding-bottom: 2em;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  #title {
+    color: var(--color-primary-light);
+    margin-block: 0;
+  }
+
+  #author {
+    margin-block: 0.25rem;
+  }
+
+  #date p {
+    margin-block: 0;
+    color: var(--color-text-dimmer);
+    font-size: 80%;
+    font-style: italic;
+  }
+
+  #date span {
+    color: var(--color-text-dimmed);
+  }
+
+  #tags {
+    margin-block: 0.75rem;
+  }
+
+  #content {
+    margin-bottom: 4em;
+  }
+
+  h1 {
+    color: var(--color-primary);
+  }
+</style>

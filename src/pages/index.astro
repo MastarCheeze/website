@@ -1,17 +1,367 @@
 ---
+import { Image } from "astro:assets";
+import { getCollection, getEntry } from "astro:content";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import avatarImage from "@assets/avatar.png";
+import BlogPost from "@components/BlogPost.astro";
+import ProjectTags from "@components/ProjectTags.astro";
 
+const skillsRow1 = (await getEntry("skills", "row1"))?.data;
+const skillsRow2 = (await getEntry("skills", "row2"))?.data;
+
+const featuredProjects = await getCollection("projects", (project) => project.data.featured);
+
+const recentBlogPosts = (await getCollection("blog"))
+	.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+	.slice(0, 3);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="MastarCheeze">
+	<div class="limit-width content">
+		<section id="intro">
+			<div id="intro-avatar">
+				<Image src={avatarImage} alt="MastarCheeze's avatar" />
+				<span id="intro-avatar-emoji">👋🏻</span>
+			</div>
+			<div id="intro-text">
+				<h2>Hello, I'm</h2>
+				<h1>MastarCheeze</h1>
+				<p>I'm an undergrad student from Malaysia that likes to mess around with computers and code.</p>
+			</div>
+		</section>
+
+		<section id="skills">
+			<h1>My skills</h1>
+			<div class="carousel carousel-spin-left">
+				<div class="carousel-group">
+					{skillsRow1?.map((skill) => <img src={skill.badge} alt={skill.name} />)}
+				</div>
+				<div class="carousel-group" aria-hidden>
+					{skillsRow1?.map((skill) => <img src={skill.badge} alt={skill.name} />)}
+				</div>
+			</div>
+			<div class="carousel carousel-spin-right">
+				<div class="carousel-group">
+					{skillsRow2?.map((skill) => <img src={skill.badge} alt={skill.name} />)}
+				</div>
+				<div class="carousel-group" aria-hidden>
+					{skillsRow2?.map((skill) => <img src={skill.badge} alt={skill.name} />)}
+				</div>
+			</div>
+		</section>
+
+		<section id="featured-projects">
+			<h1>Featured projects</h1>
+			<div class="center">
+				{
+					featuredProjects.map((project) => (
+						<a href={project.data.url}>
+							<div class="project">
+								<div class="project-description">
+									<h2>{project.data.title}</h2>
+									<p>{project.data.description}</p>
+									<ProjectTags tags={project.data.tags} />
+								</div>
+								{project.data.image && <Image src={project.data.image} alt={project.data.imageAlt ?? ""} />}
+							</div>
+						</a>
+					))
+				}
+				<div class="button-right">
+					<a href="projects/">View all<i class="fa-solid fa-angle-right"></i></a>
+				</div>
+			</div>
+		</section>
+
+		<section id="recent-blog-posts">
+			<h1>Recent blog posts</h1>
+			<div class="center">
+				{recentBlogPosts.map((post) => <BlogPost post={post} />)}
+				<div class="button-right">
+					<a href="blog/">View all<i class="fa-solid fa-angle-right"></i></a>
+				</div>
+			</div>
+		</section>
+	</div>
+</BaseLayout>
+
+<script>
+	function updateCarouselSpeed() {
+		const carousels = document.querySelectorAll(".carousel") as NodeListOf<HTMLElement>;
+
+		for (const carousel of carousels) {
+			const group = carousel.querySelector(".carousel-group") as HTMLElement;
+			const images = Array.from(group.querySelectorAll("img"));
+
+			const calculate = () => {
+				const width = group.offsetWidth;
+				const carouselSpeed = 80; // in pixels per second
+				// Ensure width isn't 0 to avoid division by zero errors
+				const duration = width > 0 ? width / carouselSpeed : 10;
+				carousel.style.setProperty("--duration", `${duration}s`);
+			};
+
+			// Set speed when all images are loaded
+			const allLoaded = images.every((img) => img.complete);
+			if (allLoaded) {
+				calculate();
+			} else {
+				window.addEventListener("load", calculate, { once: true });
+			}
+		}
+	}
+
+	updateCarouselSpeed();
+	window.addEventListener("resize", updateCarouselSpeed);
+</script>
+
+<style>
+	section {
+		margin-top: 2.5em;
+	}
+
+	#intro {
+		display: flex;
+		justify-content: center;
+		gap: 3em;
+		margin-block: 0 4em;
+	}
+
+	#intro-avatar {
+		display: grid;
+		align-items: end;
+	}
+
+	#intro-avatar > * {
+		grid-area: 1 / 1;
+	}
+
+	#intro-avatar img {
+		width: 16rem;
+	}
+
+	#intro-avatar-emoji {
+		position: relative;
+		text-align: center;
+		width: max-content;
+		font-size: 8rem;
+		translate: -60px 50px;
+		user-select: none;
+		transform-origin: 70% 65%;
+		animation: wave 3s infinite ease 2s;
+	}
+
+	@keyframes wave {
+		0% {
+			transform: rotate(0);
+		}
+		4% {
+			transform: rotate(10deg);
+		}
+		8% {
+			transform: rotate(0);
+		}
+		12% {
+			transform: rotate(10deg);
+		}
+		16% {
+			transform: rotate(0);
+		}
+		20% {
+			transform: rotate(10deg);
+		}
+		24% {
+			transform: rotate(0);
+		}
+	}
+
+	#intro-text {
+		width: fit-content;
+	}
+
+	#intro-text h2 {
+		font-size: 2rem;
+		margin-block: 0;
+	}
+
+	#intro-text h1 {
+		width: fit-content;
+		background-color: var(--color-text);
+		line-height: 1;
+		color: var(--color-bg);
+		font-size: 4rem;
+		margin-block: 0.5rem 0;
+		text-align: center;
+	}
+
+	#intro-text p {
+		margin-block: 2em 0;
+		max-width: 38ch;
+	}
+
+	h1 {
+		margin-block: 3rem 1rem;
+	}
+
+	.center {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.button-right {
+		font-size: 1.25rem;
+		padding: 0.2em 0.4em 0.2em 0.8em;
+		border-radius: 32px;
+		margin-top: 1rem;
+		transition: background-color 0.3s ease;
+	}
+
+	.button-right:hover {
+		background-color: var(--color-surface);
+	}
+
+	.button-right a {
+		color: var(--color-text);
+		transition: color 0.3s ease;
+	}
+
+	.button-right a:hover {
+		color: var(--color-primary-light);
+		text-decoration: none;
+	}
+
+	.carousel {
+		display: flex;
+		overflow-x: auto;
+		pointer-events: none;
+		--duration: 10s;
+
+		/* Fade effect */
+		mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+		-webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+	}
+
+	.carousel::-webkit-scrollbar {
+		display: none;
+	}
+
+	.carousel-group {
+		display: flex;
+		gap: 1em;
+		padding-right: 1em;
+	}
+
+	.carousel-group > * {
+		flex: 0 0;
+		width: auto;
+		height: 2.5rem;
+	}
+
+	.carousel-spin-right .carousel-group {
+		animation: spin-right var(--duration) infinite linear;
+	}
+
+	.carousel-spin-left .carousel-group {
+		animation: spin-left var(--duration) infinite linear;
+	}
+
+	@keyframes spin-left {
+		from {
+			translate: 0;
+		}
+		to {
+			translate: -100%;
+		}
+	}
+
+	@keyframes spin-right {
+		from {
+			translate: -100%;
+		}
+		to {
+			translate: 0;
+		}
+	}
+
+	#skills .carousel {
+		margin-top: 1rem;
+	}
+
+	.project {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		justify-content: space-between;
+		background-color: var(--color-surface-dark);
+		border: 1px solid var(--color-border);
+		border-radius: 8px;
+		margin-bottom: 1rem;
+		transition:
+			transform 0.3s ease,
+			border-color 0.3s ease;
+	}
+
+	.project:hover {
+		transform: scale(1.05);
+		border-color: var(--color-primary-light);
+	}
+
+	.project-description {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		padding: 1rem 1.5rem;
+	}
+
+	a:has(.project):hover {
+		text-decoration: none;
+	}
+
+	.project-description h2 {
+		color: var(--color-text);
+	}
+
+	.project-description p {
+		color: var(--color-text-dimmed);
+		margin-bottom: 1rem;
+	}
+
+	.project img {
+		width: 100%;
+		border-radius: 0 8px 8px 0;
+	}
+
+	#recent-blog-posts p {
+		text-align: center;
+	}
+
+	@media (width < 64rem) {
+		#intro {
+			flex-direction: column;
+			align-items: center;
+		}
+	}
+
+	@media (width < 40rem) {
+		#intro-avatar img {
+			width: 12rem;
+		}
+
+		#intro-avatar-emoji {
+			font-size: 6rem;
+			translate: -45px 37.5px;
+		}
+
+		#intro-text h2 {
+			font-size: 1rem;
+		}
+
+		#intro-text h1 {
+			font-size: 2.25rem;
+		}
+
+		#intro-text p {
+			font-size: 1rem;
+		}
+	}
+</style>

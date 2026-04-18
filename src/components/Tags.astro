@@ -1,0 +1,56 @@
+---
+import { slugify } from "@utils/slugify";
+
+interface Props {
+  tags: string[];
+  active?: string;
+}
+
+const { tags, active } = Astro.props;
+---
+
+<ul>
+  {
+    tags.map((tag) => (
+      <li>
+        <a href={`/blog/tags/${slugify(tag)}`} class:list={{ active: tag === active }}>
+          {tag}
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    margin-inline: 0;
+    padding: 0;
+    list-style: none;
+    gap: 0.5em;
+  }
+
+  a {
+    padding: 0.1em 0.6em;
+    font-size: 85%;
+    color: var(--color-text-dimmed);
+    background-color: var(--color-surface);
+    border-radius: 16px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  a:hover {
+    color: var(--color-text);
+  }
+
+  .active {
+    background-color: var(--color-text-dimmed);
+    color: var(--color-bg);
+  }
+
+  .active:hover {
+    color: var(--color-bg);
+  }
+</style>

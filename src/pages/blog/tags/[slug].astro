@@ -1,0 +1,40 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Tags from "@components/Tags.astro";
+import BlogPost from "@components/BlogPost.astro";
+import { getAllTags } from "@utils/getAllTags";
+import { slugify } from "@utils/slugify";
+
+export async function getStaticPaths() {
+  return (await getAllTags()).map((tag) => ({
+    params: { slug: slugify(tag) },
+    props: { tag },
+  }));
+}
+
+const { tag } = Astro.props;
+const posts = await getCollection("blog", (post) => post.data.tags.includes(tag));
+---
+
+<BaseLayout title="Tags | MastarCheeze">
+  <div class="limit-width content">
+    <div id="tags">
+      <Tags tags={await getAllTags()} active={tag} />
+    </div>
+    <div id="posts">
+      {posts.map((post) => <BlogPost post={post} activeTag={tag} />)}
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  #tags {
+    margin-bottom: 4rem;
+    font-size: 1.5rem;
+  }
+
+  #tags :global(.active) {
+    background-color: var(--color-primary-light);
+  }
+</style>

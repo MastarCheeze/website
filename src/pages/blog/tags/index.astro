@@ -1,0 +1,19 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Tags from "@components/Tags.astro";
+import { getAllTags } from "@utils/getAllTags";
+---
+
+<BaseLayout title="Tags | MastarCheeze">
+  <div class="limit-width content">
+    <div id="tags">
+      <Tags tags={await getAllTags()} />
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  #tags {
+    font-size: 1.5rem;
+  }
+</style>
