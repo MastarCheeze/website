@@ -1,4 +1,11 @@
 {
+  "website": {
+    "title": "MastarCheeze's Website",
+    "description": "My portfolio and blog website.",
+    "tags": [ "Astro" ],
+    "url": "https://github.com/MastarCheeze/website",
+    "order": 0
+  },
   "pyp-finder": {
     "title": "PYP Finder",
     "description": "Past year paper finder for CAIE exam papers.",
