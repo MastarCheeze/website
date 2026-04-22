@@ -30,8 +30,20 @@ blockquote,
 table,
 pre,
 ul,
-ol {
+ol,
+figure {
   margin-block: 1rem;
+}
+
+img {
+  width: 100%;
+}
+
+figcaption {
+  color: var(--color-text-dimmed);
+  font-size: 80%;
+  font-style: italic;
+  text-align: center;
 }
 
 blockquote {
