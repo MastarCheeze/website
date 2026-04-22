@@ -1,5 +1,7 @@
 // @ts-check
 import { defineConfig, fontProviders } from 'astro/config';
+// @ts-ignore
+import rehypeFigure from "@microflash/rehype-figure";
 
 // https://astro.build/config
 export default defineConfig({
@@ -23,5 +25,6 @@ export default defineConfig({
     shikiConfig: {
       theme: "material-theme-darker",
     },
+    rehypePlugins: [rehypeFigure],
   },
 });
