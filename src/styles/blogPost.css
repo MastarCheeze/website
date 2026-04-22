@@ -91,6 +91,19 @@ table th {
   background-color: var(--color-surface);
 }
 
+a[target="_blank"]::after {
+  font-family: "Font Awesome 7 Free";
+  font-weight: 900;
+  content: "\f08e";
+  margin-left: 0.4em;
+  font-size: 70%;
+  vertical-align: middle;
+  text-decoration: none;
+  display: inline-block;
+  position: relative;
+  top: -2px;
+}
+
 #blog-post {
   font-size: 1.25rem;
 }
