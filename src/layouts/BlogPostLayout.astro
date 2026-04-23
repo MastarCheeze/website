@@ -41,6 +41,7 @@ const updatedDate = post.data.updatedDate ? formatDate(post.data.updatedDate) : 
           )
         }
       </div>
+      <p id="description">{post.data.description}</p>
       <div id="tags">
         <Tags tags={post.data.tags} />
       </div>
@@ -84,6 +85,10 @@ const updatedDate = post.data.updatedDate ? formatDate(post.data.updatedDate) : 
   }
 
   #date span {
+    color: var(--color-text-dimmed);
+  }
+
+  #description {
     color: var(--color-text-dimmed);
   }
 
