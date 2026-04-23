@@ -108,6 +108,10 @@ a[target="_blank"]::after {
   top: -2px;
 }
 
+div.callout {
+  padding: 1.5rem 1.5rem 0.75rem 1.5rem;
+}
+
 .callout-content {
   font-size: 85%;
   line-height: 1.6;
