@@ -26,14 +26,17 @@ h1 {
 }
 
 p,
-blockquote,
-table,
-pre,
 ul,
 ol,
-figure,
-.callout {
+blockquote,
+pre {
   margin-block: 1rem;
+}
+
+figure,
+table,
+div.callout {
+  margin-block: 2rem;
 }
 
 img {
