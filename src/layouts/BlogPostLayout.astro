@@ -6,6 +6,8 @@ import Font from "astro/components/Font.astro";
 import BaseLayout from "@layouts/BaseLayout.astro";
 import Tags from "@components/Tags.astro";
 import "@styles/blogPost.css";
+// @ts-ignore
+import "rehype-callouts/theme/obsidian";
 import { formatDate } from "@utils/formatDate";
 
 interface Props {
@@ -43,7 +45,7 @@ const updatedDate = post.data.updatedDate ? formatDate(post.data.updatedDate) : 
         <Tags tags={post.data.tags} />
       </div>
     </div>
-    <div id="content">
+    <div id="content" class="dark">
       <slot />
     </div>
   </div>

@@ -31,7 +31,8 @@ table,
 pre,
 ul,
 ol,
-figure {
+figure,
+.callout {
   margin-block: 1rem;
 }
 
@@ -102,6 +103,11 @@ a[target="_blank"]::after {
   display: inline-block;
   position: relative;
   top: -2px;
+}
+
+.callout-content {
+  font-size: 85%;
+  line-height: 1.6;
 }
 
 #blog-post {
