@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@microflash/rehype-figure": "^2.1.4",
+    "@shikijs/transformers": "^4.0.2",
     "astro": "^6.1.8",
     "masonry-layout": "^4.2.2",
     "rehype-callouts": "^2.1.2",

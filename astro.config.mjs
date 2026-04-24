@@ -4,6 +4,11 @@ import { defineConfig, fontProviders } from "astro/config";
 import rehypeFigure from "@microflash/rehype-figure";
 import rehypeExternalLinks from "rehype-external-links";
 import rehypeCallouts from "rehype-callouts";
+import {
+  transformerNotationHighlight,
+  transformerNotationWordHighlight,
+  transformerNotationDiff,
+} from '@shikijs/transformers';
 
 // https://astro.build/config
 export default defineConfig({
@@ -26,6 +31,11 @@ export default defineConfig({
   markdown: {
     shikiConfig: {
       theme: "material-theme-darker",
+      transformers: [
+        transformerNotationHighlight(),
+        transformerNotationWordHighlight(),
+        transformerNotationDiff(),
+      ],
     },
     rehypePlugins: [
       rehypeFigure,

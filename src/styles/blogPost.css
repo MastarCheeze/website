@@ -67,16 +67,73 @@ code {
 
 pre {
   max-width: 100%;
-  padding: 1rem;
+  padding: 1em 0;
   overflow: auto;
   line-height: 1.45;
+  min-height: 1.45rem;
   border-radius: 4px;
   white-space: pre;
+
+  /* yellow 500 */
+  --color-highlight: #eab30830;
+  /* green 500 */
+  --color-diff-add: #22c55e30;
+  --color-diff-add-icon: #22c55e;
+  /* red 500 */
+  --color-diff-remove: #ef444430;
+  --color-diff-remove-icon: #ef4444;
 }
 
 pre code {
+  display: block;
   background-color: transparent;
   padding: 0;
+  width: max-content;
+  min-width: 100%;
+  position: relative;
+}
+
+pre .line {
+  display: inline-block;
+  min-width: 100%;
+  padding: 0.1em 1.25em;
+}
+
+pre .line.highlighted,
+pre .line.highlighted-word {
+  background-color: var(--color-highlight);
+  font-weight: bold;
+}
+
+pre .line.highlighted-word {
+  padding: 0.1em 0.2em;
+  border-radius: 4px;
+}
+
+pre .line.diff.add {
+  background-color: var(--color-diff-add);
+}
+
+pre .line.diff.remove {
+  background-color: var(--color-diff-remove);
+}
+
+pre .line.diff.add::before,
+pre .line.diff.remove::before {
+  position: absolute;
+  left: 0.3em;
+  font-weight: bold;
+  user-select: none;
+}
+
+pre .line.diff.add::before {
+  content: "+";
+  color: #22c55e;
+}
+
+pre .line.diff.remove::before {
+  content: "-";
+  color: var(--color-diff-remove-icon);
 }
 
 table {
