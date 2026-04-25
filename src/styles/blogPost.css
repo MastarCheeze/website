@@ -35,6 +35,7 @@ pre {
 
 figure,
 table,
+hr,
 div.callout {
   margin-block: 2rem;
 }
@@ -150,6 +151,12 @@ table td {
 
 table th {
   background-color: var(--color-surface);
+}
+
+hr {
+  width: 95%;
+  margin-inline: auto;
+  border-color: var(--color-surface);
 }
 
 a[target="_blank"]::after {
