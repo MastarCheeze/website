@@ -26,6 +26,7 @@ export default defineConfig({
       cssVariable: "--font-cascadia-code",
       styles: ["normal", "italic"],
       weights: ["400"],
+      subsets: ["latin", "symbols2"],
     },
   ],
   markdown: {
