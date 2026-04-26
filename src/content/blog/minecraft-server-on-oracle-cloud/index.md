@@ -1,7 +1,7 @@
 ---
 title: "Creating a Free Minecraft Server on Oracle Cloud"
 description: "A complete beginner's guide on how to set up a containerized Minecraft server on Oracle Cloud Infrastructure, for free."
-publishDate: "22 April 2026"
+publishDate: "26 April 2026"
 tags: ["Minecraft", "Docker", "Oracle Cloud Infrastructure"]
 ---
 
