@@ -5,6 +5,7 @@ import Font from "astro/components/Font.astro";
 
 import BaseLayout from "@layouts/BaseLayout.astro";
 import Tags from "@components/Tags.astro";
+import Comments from "@components/Comments.astro";
 import "@styles/blogPost.css";
 // @ts-ignore
 import "rehype-callouts/theme/obsidian";
@@ -48,6 +49,9 @@ const updatedDate = post.data.updatedDate ? formatDate(post.data.updatedDate) : 
     </div>
     <div id="content" class="dark">
       <slot />
+    </div>
+    <div id="comments">
+      <Comments />
     </div>
   </div>
 </BaseLayout>
