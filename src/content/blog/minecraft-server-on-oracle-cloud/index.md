@@ -1,20 +1,29 @@
 ---
 title: "Creating a Free Minecraft Server on Oracle Cloud"
-description: "A complete beginner's guide on how to set up a containerized Minecraft server on Oracle Cloud Infrastructure, for free."
+description: "A beginner's guide on how to set up a containerized Minecraft server on Oracle Cloud Infrastructure, for free."
 publishDate: "26 April 2026"
+updatedDate: "19 July 2026"
 tags: ["Minecraft", "Docker", "Oracle Cloud Infrastructure"]
 ---
 
-Out of all major cloud hosting providers, Oracle Cloud Infrastructure (OCI) provides the most generous free tier. You can run a virtual machine with 24 GB of memory at no cost, provided you don't exceed the free tier limits.
+> [!info]
+> To be able to follow this tutorial, you will need some basic understanding on how to use a command-line interface.
 
-Here's a breakdown of the [free tier usage limits](https://docs.oracle.com/en-us/iaas/Content/FreeTier/freetier_topic-Always_Free_Resources.htm) for an Arm Compute Instance:
+Out of all major cloud hosting providers, Oracle Cloud Infrastructure (OCI) provides the most generous free tier. You can run a virtual machine with 12 GB of memory at no cost, provided you don't exceed the free tier limits.
 
-- 4 OCPUs per month. (An OCPU is a physical processor core.)
-- 24 GB of RAM across all instances.
+Here's a breakdown of the [free tier usage limits](https://docs.oracle.com/en-us/iaas/Content/FreeTier/freetier_topic-Always_Free_Resources.htm) for an OCI Ampere A1 Compute Instance:
+
+- 2 OCPUs per month. (An OCPU is a physical processor core.)
+- 12 GB of RAM across all instances.
 - 200 GB of storage.
 - 10 TB of outbound data (egress) per month.
 
 Very generous. Thanks Larry Ellison.
+
+> [!info]
+> Before June 2026, the free tier limits were 4 OCPUs per month and 24 GB of RAM across all instances. Yes, Larry cut it in half. Preposterous!
+> 
+> I've updated this tutorial to reflect the change.
 
 To simplify things, we'll be running our Minecraft server on a Docker container to avoid having to set up the server manually. Don't worry if you're not familiar with Docker, I'll explain things as we go.
 
@@ -24,7 +33,7 @@ Head over to [signup.cloud.oracle.com](https://signup.cloud.oracle.com) and regi
 
 You can now start using OCI services for free, but you might run into an `Out of capacity` error while creating a new Compute Instance. Oracle only allocates a limited amount of instances for Always Free accounts, so if all resources are being used at the moment, you will need to wait for them to be reclaimed. You can bypass this by upgrading your account to [Pay As You Go (PAYG)](https://www.oracle.com/asean/industries/payg-services-price-list/). You will still have access to the free tier with a PAYG account, so you don't ever have to pay anything unless you accidentally exceed the free tier usage limits. Very sneaky, Larry Ellison.
 
-On the cloud dashboard, click on the navigation menu and head over to `Billing & Cost Management > Upgrade and Manage Payment`. There should be an option to upgrade your account.
+On the OCI dashboard, click on the navigation menu and head over to `Billing & Cost Management > Upgrade and Manage Payment`. There should be an option to upgrade your account.
 
 # Setting up the infrastructure
 
@@ -69,7 +78,7 @@ We'll be using Ubuntu for our instance. Scroll down to the "Image" section and c
 
 Scroll further to the "Shape" section and change the shape series to "Ampere" and the shape name to "VM.Standard.A1.Flex". This is the shape that is eligible for the free tier usage limits I mentioned at the beginning of this guide.
 
-Click on the arrow beside the shape name to change the number of OCPUs and amount of memory for the shape. Since Minecraft is primarily single-threaded, we only need 2 OCPUs, one for the core game thread, and another to handle other background tasks. For the amount of memory, allocate 1 GB more than the amount you want the Minecraft server to run on. I want my server to run on 8 GB of memory, so I'll allocate 9 GB to my shape. The remaining 1 GB will be used by the OS to run any background system tasks.
+Click on the arrow beside the shape name to change the number of OCPUs and amount of memory for the shape. Since Minecraft is primarily single-threaded, we only need 2 OCPUs, one for the core game thread, and another to handle other background tasks. For the amount of memory, allocate 2 GB more than the amount you want the Minecraft server to run on. I want my server to run on 10 GB of memory, so I'll allocate 12 GB to my shape, exactly within the limits of the free tier. The remaining 2 GB will be used by the OS to run any background system tasks.
 
 > [!warning]
 > Avoid allocating too much memory for your Minecraft server. It seems counterintuitive, but too much memory may cause lag spikes because Java's garbage collector will take longer to clear the large blocks of memory.
@@ -97,7 +106,7 @@ You can now finish creating your Compute Instance.
 
 # Connecting to the virtual machine
 
-We'll use SSH to connect to our virtual machine. In the dashboard, select your Compute Instance and scroll down to the "Instance access" section. Write down the public IP address, we'll need it later.
+We'll use SSH to connect to our virtual machine. In the OCI dashboard, select your Compute Instance and scroll down to the "Instance access" section. Write down the public IP address, we'll need it later.
 
 Before we can connect to our virtual machine, we must make sure that our SSH private key file has the correct permissions. Only the owner (you) should have access to the file. If not, you'll get this error when trying to connect:
 
@@ -126,7 +135,7 @@ Unfortunately, I do not own a Windows machine. So if you're on Windows, you gott
 > 5. Type your Windows username, click Check Names, and hit OK.
 > 6. Ensure the "Basic permissions" are set to Read or Full Control, then click OK until all windows are closed.
 
-After the permissions are changed, you can enter this command to connect to the virtual machine as the user `ubuntu`:
+After the permissions are changed, you can enter this command to connect to the virtual machine as the user `ubuntu`, using the public IP address you've written down earlier:
 
 ```
 $ ssh -i minecraft.key ubuntu@[your-ip-address]
@@ -189,10 +198,10 @@ services:
       - 25565:25565
     volumes:
       - /mnt/world-data/data:/data
-    mem_limit: 8.5G
+    mem_limit: 11G
     environment:
       EULA: true
-      MEMORY: 8G
+      MEMORY: 10G
       VERSION: 1.21.11
       TYPE: VANILLA # VANILLA, FABRIC, FORGE, SPIGOT, ...
       DIFFICULTY: normal # peaceful, normal, easy, hard
@@ -240,15 +249,15 @@ By default, files in a container are isolated from the host machine, and they va
 Note that Docker volumes are different concepts from OCI's block volumes.
 
 ```yaml
-mem_limit: 8.5G
+mem_limit: 11G
 ```
 
-This will set a limit on the amount of memory the container can allocate. Change this to 0.5 GB less than the amount you allocated for your Compute Instance. I'll explain why in a moment.
+This will set a limit on the amount of memory the container can allocate. Set this to 1 GB less than the amount you allocated for your Compute Instance. In my case, I've allocated 12 GB to my instance, so I'll set `mem_limit` to `11G`. I'll explain why in a moment.
 
 ```yaml
 environment:
   EULA: true
-  MEMORY: 8G
+  MEMORY: 10G
   VERSION: 1.21.11
   TYPE: VANILLA # VANILLA, FABRIC, FORGE, SPIGOT, ...
   DIFFICULTY: normal # peaceful, normal, easy, hard
@@ -269,7 +278,9 @@ This will specify environment variables that will be passed to the container.
 
 By setting `EULA` to true, you agree with the [Minecraft EULA](https://www.minecraft.net/en-us/eula). You must set this to true to be able to run the server.
 
-Here, the `MEMORY` variable is set to `8G`. 8 GB of memory will be allocated to the Minecraft server. We previously set `mem_limit` to `8.5G`. This is the memory limit for the entire Docker container. Setting this to 0.5 GB more than the memory limit for the Minecraft server will ensure that Java will have some memory to work with.
+Here, the `MEMORY` variable is set to `10G`. 10 GB of memory will be allocated to the Minecraft server, which is 2 GB more than what is allocated to the instance.
+
+`mem_limit` was set to `11G`. This is the memory limit for the entire Docker container. Setting this to 1 GB more than the memory limit for the Minecraft server will ensure that Java will have some memory to work with. The remaining 1 GB will be used by the instance to handle background tasks.
 
 Feel free to change any other variables to your liking. For more information about the environment variables you can set, check out the [itzg/minecraft-server documentation](https://docker-minecraft-server.readthedocs.io/en/latest/configuration/server-properties/).
 
@@ -330,6 +341,7 @@ loop4     7:4    0 44.3M  1 loop /snap/snapd/24672
 sda       8:0    0 46.6G  0 disk
 ├─sda1    8:1    0 46.5G  0 part /
 └─sda15   8:15   0   99M  0 part /boot/efi
+// [!code highlight]
 sdb       8:16   0   50G  0 disk
 ```
 
@@ -428,10 +440,10 @@ Create a mount point for our filesystem.
 $ sudo mkdir /mnt/world-data
 ```
 
-Run the following command to append a line to the `/etc/fstab` file. This will configure the OS to mount the block volume to `/mnt/world-data` automatically. Remember to replace the SCSI ID in the command with yours.
+Run the following command to append a line of code to the `/etc/fstab` file. This will configure the OS to mount the block volume to `/mnt/world-data` automatically. Remember to replace the SCSI ID in the command with yours.
 
 ```
-$ echo "/dev/disk/by-id/scsi-360bbbeba62a04930ab0dde9c78f55fea-part1 /mnt/world-data ext4 _netdev,nofail 0 2" | sudo tee -a /etc/fstab
+$ echo "/dev/disk/by-id/[your-scsi-id] /mnt/world-data ext4 _netdev,nofail 0 2" | sudo tee -a /etc/fstab
 ```
 
 Finally, run the `mount` command to mount the volumes in the `/etc/fstab` file.
@@ -497,7 +509,7 @@ $ docker compose exec -ti minecraft rcon-cli
 
 ## Load an existing world
 
-To load an existing world into the server, remove all data from the `/mnt/world-data/data/world` folder and replace it with your world data. I'm using `scp` for this. Note that you will need to change the owner of the folder to `ubuntu` in order for `scp` to work. Execute these commands on your local device.
+To load an existing world into the server, remove all data from the `/mnt/world-data/data/world` folder and replace it with your world data. I'll use `scp` for this. Note that you will need to change the owner of the folder to `ubuntu` in order for `scp` to work. Execute these commands on your local device.
 
 ```
 $ ssh minecraft "sudo rm -r /mnt/world-data/data/world/*"
@@ -507,9 +519,9 @@ $ scp -r ./path/to/world/folder/* minecraft:/mnt/world-data/data/world/
 
 ## Add mods and plugins
 
-Let's try to install the [Carpet mod](https://modrinth.com/mod/carpet) on our Minecraft server.
+Let's install the [Carpet mod](https://modrinth.com/mod/carpet) on our Minecraft server.
 
-Edit `compose.yaml` so that the server uses the [Fabric mod loader](https://fabricmc.net), then add the environment variable `MODRINTH_PROJECTS` to specify which mods to download from [Modrinth](https://modrinth.com/).
+Edit `compose.yaml` so that the server uses the [Fabric mod loader](https://fabricmc.net), then add the `MODRINTH_PROJECTS` environment variable to specify which mods to download from [Modrinth](https://modrinth.com/).
 
 ```yaml
 environment:
@@ -582,6 +594,8 @@ $ sudo cp -r /mnt/world-data-restored/data/world/* /mnt/world-data/data/world
 $ sudo chown -R ubuntu:ubuntu /mnt/world-data/data/world
 $ docker compose up
 ```
+
+You can now remove the backup block volume from the OCI dashboard.
 
 ---
 
