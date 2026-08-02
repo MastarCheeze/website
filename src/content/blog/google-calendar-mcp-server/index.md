@@ -212,7 +212,7 @@ It's working! Now all I had to do was run `opencode mcp auth google-workspace` t
 
 ![Authorising the MCP server to access services linked to my Google account.](auth-request.png)
 
-Running a quick test to confirm that everything is working.
+Running a quick test confirms that everything is working.
 
 ![Testing out different functions of the MCP server.](chat-gws.png)
 
