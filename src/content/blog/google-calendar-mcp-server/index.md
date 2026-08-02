@@ -1,11 +1,10 @@
 ---
 title: "Hosting My Own Google Calendar MCP Server"
 description: "How I hosted my own Google Calendar MCP server to be used with OpenCode."
-publishDate: "31 July 2026" # WIP
+publishDate: "2 August 2026"
 image: ""
 imageAlt: ""
 tags: ["MCP", "Docker"]
-draft: true
 ---
 
 I've recently started university and I know my timetable will be packed with events. I add all my classes, events, holidays and birthdays into Google Calendar so I have an aggregate view of everything in one place. Before, I used to manually log each and every event, entering details for time, location and extra notes.
